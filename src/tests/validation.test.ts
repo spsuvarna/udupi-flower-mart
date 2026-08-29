@@ -1,0 +1,2 @@
+import { describe,expect,it } from 'vitest'; import { isValidPinCode } from '../utils/validation';
+describe('PIN-code validation',()=>{it('accepts a six-digit Karnataka PIN',()=>expect(isValidPinCode('576101')).toBe(true));it('rejects malformed or non-Karnataka PINs',()=>{expect(isValidPinCode('12345')).toBe(false);expect(isValidPinCode('400001')).toBe(false);expect(isValidPinCode('57610A')).toBe(false)})});

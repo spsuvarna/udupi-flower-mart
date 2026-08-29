@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://spsuvarna.github.io/udupi-flower-mart/sitemap.xml

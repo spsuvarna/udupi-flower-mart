@@ -4,6 +4,7 @@ import type { Product } from '../types';
 import { formatCurrency } from '../utils/currency';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
+import { websiteSettings } from '../data/settings';
 
 export function ProductCard({product}:{product:Product}){
   const {items,addItem,setQuantity}=useCart();
@@ -16,7 +17,7 @@ export function ProductCard({product}:{product:Product}){
 
   return <article className="group flex h-full min-w-0 flex-col overflow-hidden rounded-2xl bg-white transition duration-300 hover:-translate-y-1 hover:shadow-lift">
     <Link to={`/products/${product.slug}`} className="relative block overflow-hidden bg-rose-50">
-      <img src={product.imagePath} alt={`${product.name} from Udupi Hoovu`} width="600" height="450" loading="lazy" className="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105"/>
+      <img src={product.imagePath} alt={`${product.name} from ${websiteSettings.shopName}`} width="600" height="450" loading="lazy" className="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105"/>
       {discount>0&&<span className="absolute left-2 top-2 rounded-lg bg-temple px-2 py-1 text-[10px] font-extrabold text-white sm:left-3 sm:top-3 sm:text-xs">{discount}% OFF</span>}
       {!product.available&&<span className="absolute inset-0 grid place-items-center bg-slate-900/55 text-center text-sm font-bold text-white">Temporarily unavailable</span>}
     </Link>

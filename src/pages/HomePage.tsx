@@ -23,18 +23,18 @@ export function HomePage() {
   const [search,setSearch]=useState('');
   const navigate=useNavigate();
   const banner=banners[0];
-  const whatsapp=createWhatsAppUrl(websiteSettings.whatsappNumber,'Hello Udupi Hoovu! I need help choosing fresh flowers.');
+  const whatsapp=createWhatsAppUrl(websiteSettings.whatsappNumber,`Hello ${websiteSettings.shopName}! I need help choosing fresh flowers.`);
   const submit=(event:FormEvent)=>{event.preventDefault(); const query=search.trim(); navigate(query?`/products?q=${encodeURIComponent(query)}`:'/products');};
 
   return <>
-    <Seo title="Fresh Local Flower Delivery" description="Order Udupi Mallige, Sevantige, Chendu Hoovu, Kakada, Aboli, roses and zinnias from Udupi Hoovu."/>
+    <Seo title="Fresh Local Flower Delivery" description={`Order Udupi Mallige, Sevantige, Chendu Hoovu, Kakada, Aboli, roses and zinnias from ${websiteSettings.shopName}.`}/>
 
     <section className="relative overflow-hidden bg-gradient-to-br from-[#FFF4D6] via-cream to-[#FCE2D7]">
       <div className="absolute -left-16 top-20 h-52 w-52 rounded-full border-[42px] border-gold/10"/>
       <div className="container-page relative grid min-h-[560px] items-center gap-8 py-10 lg:grid-cols-[1.02fr_.98fr] lg:py-14">
         <div className="z-10">
           <button onClick={()=>navigate('/delivery')} className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-bold text-forest shadow-sm"><MapPin size={17} className="text-saffron"/>Delivering across Udupi district <ChevronRight size={16}/></button>
-          <p className="mt-7 font-bold uppercase tracking-[.22em] text-saffron">ಉಡುಪಿ ಹೂವು · Rooted in tradition</p>
+          <p className="mt-7 font-bold uppercase tracking-[.22em] text-saffron">Kepula · Rooted in Udupi tradition</p>
           <h1 className="mt-3 max-w-2xl font-serif text-4xl font-bold leading-[1.08] text-forest sm:text-6xl">Fresh local flowers,<br/><span className="text-floral">at your doorstep.</span></h1>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate-600">From fragrant Shankarapura Mallige to bright Chendu Hoovu—order Udupi’s everyday traditions in a few simple taps.</p>
           <form onSubmit={submit} className="mt-7 flex max-w-xl gap-2 rounded-2xl bg-white p-2 shadow-lift">
@@ -44,7 +44,7 @@ export function HomePage() {
         </div>
         <div className="relative">
           <div className="absolute -inset-4 rotate-2 rounded-[2.5rem] border-2 border-gold/30"/>
-          <img src={banner.imagePath} alt="Fresh local flowers arranged at Udupi Hoovu" width="800" height="600" className="relative aspect-[4/3] w-full rounded-[2rem] object-cover shadow-2xl"/>
+          <img src={banner.imagePath} alt={`Fresh local flowers arranged at ${websiteSettings.shopName}`} width="800" height="600" className="relative aspect-[4/3] w-full rounded-[2rem] object-cover shadow-2xl"/>
           <div className="absolute -bottom-4 left-4 flex items-center gap-3 rounded-2xl bg-white p-3 pr-5 shadow-lift sm:left-8"><span className="grid h-11 w-11 place-items-center rounded-full bg-green-100 text-leaf"><Clock3 size={22}/></span><span><strong className="block text-sm text-forest">Freshly prepared</strong><small className="text-slate-500">Delivery slots from 6 AM</small></span></div>
         </div>
       </div>

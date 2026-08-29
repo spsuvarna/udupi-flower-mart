@@ -6,6 +6,7 @@ import { Seo } from '../components/Seo';
 import { products } from '../data/products';
 import { categories } from '../data/categories';
 import { occasions } from '../data/occasions';
+import { websiteSettings } from '../data/settings';
 
 export function ProductsPage(){
   const [params]=useSearchParams();
@@ -23,7 +24,7 @@ export function ProductsPage(){
   }).sort((a,b)=>sort==='name'?a.name.localeCompare(b.name):sort==='low'?a.discountPrice-b.discountPrice:sort==='high'?b.discountPrice-a.discountPrice:b.popularity-a.popularity),[search,category,occasion,price,sort]);
 
   return <>
-    <Seo title="Browse Fresh Flowers" description="Shop Udupi Mallige, Sevantige, Chendu Hoovu, Kakada, Aboli, roses and zinnias from Udupi Hoovu."/>
+    <Seo title="Browse Fresh Flowers" description={`Shop Udupi Mallige, Sevantige, Chendu Hoovu, Kakada, Aboli, roses and zinnias from ${websiteSettings.shopName}.`}/>
     <header className="border-b border-forest/5 bg-white py-9"><div className="container-page"><p className="font-bold uppercase tracking-widest text-saffron">Fresh today in Udupi</p><h1 className="mt-2 font-serif text-4xl font-bold sm:text-5xl">Find your flowers</h1><p className="mt-3 max-w-2xl text-slate-500">Browse local favourites, filter by tradition, and add what you need in a tap.</p></div></header>
     <div className="container-page py-8">
       <div className="sticky top-[76px] z-30 -mx-4 border-y border-forest/5 bg-cream/95 px-4 py-4 backdrop-blur sm:static sm:mx-0 sm:rounded-2xl sm:border sm:bg-white sm:p-5 sm:shadow-soft">

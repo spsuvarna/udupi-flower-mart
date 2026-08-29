@@ -32,7 +32,7 @@ export function Layout(){
     </div>
     <header className="sticky top-0 z-50 border-b border-forest/10 bg-cream/95 shadow-[0_4px_20px_rgba(20,63,50,.06)] backdrop-blur-xl">
       <div className="container-page flex min-h-[76px] items-center gap-4 py-2">
-        <Link to="/" aria-label="Udupi Hoovu home" className="shrink-0"><BrandLogo/></Link>
+        <Link to="/" aria-label={`${websiteSettings.shopName} home`} className="shrink-0"><BrandLogo/></Link>
         <button type="button" onClick={()=>navigate('/delivery')} className="hidden min-w-0 items-center gap-2 border-l border-forest/15 pl-4 text-left md:flex">
           <MapPin className="shrink-0 text-saffron" size={20}/><span className="min-w-0"><small className="block font-bold text-slate-500">DELIVER TO</small><strong className="block max-w-40 truncate text-sm text-forest">Udupi district</strong></span>
         </button>

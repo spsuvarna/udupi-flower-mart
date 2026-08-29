@@ -1,4 +1,4 @@
-# Udupi Hoovu
+# Kepula Flower Store
 
 A responsive, frontend-only flower-ordering website for delivery within Udupi district. Built with React, TypeScript, Vite, Tailwind CSS and hash-based React Router. Orders and custom enquiries are completed through WhatsApp. There is no backend, database, login or online payment collection.
 
@@ -26,7 +26,8 @@ The production site is generated in `dist/`.
 
 All business content is under `src/data/`:
 
-- `products.ts`: add/edit products, availability, prices, minimum quantities and image paths. Keep every `id`, `slug` and `productCode` unique. Change `originalPrice` and `discountPrice` here.
+- `prices.ts`: change flower prices here. `original` is the regular crossed-out amount and `selling` is the amount customers pay.
+- `products.ts`: add/edit products, availability, minimum quantities and image paths. Keep every `id`, `slug` and `productCode` unique.
 - `categories.ts` and `occasions.ts`: catalogue filters and home-page links.
 - `deliveryAreas.ts`: area, taluk, PIN codes, delivery fee, minimum order, same-day status and estimate.
 - `banners.ts` and `testimonials.ts`: home-page content.
@@ -54,7 +55,7 @@ Do not prefix asset values in data with the repository name; Vite applies the de
 ```bash
 git init
 git add .
-git commit -m "Create Udupi Hoovu"
+git commit -m "Create Kepula Flower Store"
 git branch -M main
 git remote add origin https://github.com/YOUR-USERNAME/udupi-flower-mart.git
 git push -u origin main

@@ -12,7 +12,6 @@ const CartPage = lazy(() => import('./pages/CartPage').then(module => ({ default
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage').then(module => ({ default: module.CheckoutPage })));
 const CustomOrderPage = lazy(() => import('./pages/CustomOrderPage').then(module => ({ default: module.CustomOrderPage })));
 const DeliveryPage = lazy(() => import('./pages/DeliveryPage').then(module => ({ default: module.DeliveryPage })));
-const ContactPage = lazy(() => import('./pages/ContactPage').then(module => ({ default: module.ContactPage })));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(module => ({ default: module.NotFoundPage })));
 
 function LoadingPage() {
@@ -20,5 +19,5 @@ function LoadingPage() {
 }
 
 export default function App() {
-  return <HashRouter><CartProvider><ToastProvider><Suspense fallback={<LoadingPage/>}><Routes><Route element={<Layout/>}><Route path="/" element={<HomePage/>}/><Route path="/products" element={<ProductsPage/>}/><Route path="/products/:slug" element={<ProductDetailsPage/>}/><Route path="/cart" element={<CartPage/>}/><Route path="/checkout" element={<CheckoutPage/>}/><Route path="/custom-order" element={<CustomOrderPage/>}/><Route path="/delivery" element={<DeliveryPage/>}/><Route path="/contact" element={<ContactPage/>}/><Route path="*" element={<NotFoundPage/>}/></Route></Routes></Suspense></ToastProvider></CartProvider></HashRouter>;
+  return <HashRouter><CartProvider><ToastProvider><Suspense fallback={<LoadingPage/>}><Routes><Route element={<Layout/>}><Route path="/" element={<HomePage/>}/><Route path="/products" element={<ProductsPage/>}/><Route path="/products/:slug" element={<ProductDetailsPage/>}/><Route path="/cart" element={<CartPage/>}/><Route path="/checkout" element={<CheckoutPage/>}/><Route path="/custom-order" element={<CustomOrderPage/>}/><Route path="/delivery" element={<DeliveryPage/>}/><Route path="*" element={<NotFoundPage/>}/></Route></Routes></Suspense></ToastProvider></CartProvider></HashRouter>;
 }

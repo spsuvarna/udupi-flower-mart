@@ -1,4 +1,4 @@
-# Kepula Flower Store
+# ಉಡುಪಿ ಮಲ್ಲಿಗೆ · Udupi Mallige
 
 A responsive, frontend-only flower-ordering website for delivery within Udupi district. Built with React, TypeScript, Vite, Tailwind CSS and hash-based React Router. Orders and custom enquiries are completed through WhatsApp. There is no backend, database, login or online payment collection.
 
@@ -13,10 +13,13 @@ npm run dev
 
 Open the local URL printed by Vite. Run all quality checks with:
 
+Install Chromium once before the browser test with `npx playwright install chromium`.
+
 ```bash
 npm run lint
 npm run typecheck
 npm test
+npm run test:e2e
 npm run build
 ```
 
@@ -26,10 +29,10 @@ The production site is generated in `dist/`.
 
 All business content is under `src/data/`:
 
-- `prices.ts`: change flower prices here. `original` is the regular crossed-out amount and `selling` is the amount customers pay.
+- `prices.ts`: update Mallige Chendu, Mallige Atte and Jaaji prices whenever your buying rate changes. Keep `original` and `selling` equal unless there is a genuine discount.
 - `products.ts`: add/edit products, availability, minimum quantities and image paths. Keep every `id`, `slug` and `productCode` unique.
 - `categories.ts` and `occasions.ts`: catalogue filters and home-page links.
-- `deliveryAreas.ts`: area, taluk, PIN codes, delivery fee, minimum order, same-day status and estimate.
+- `deliveryAreas.ts`: area, taluk, PIN codes, delivery fee, minimum order and scheduled-delivery estimate.
 - `banners.ts` and `testimonials.ts`: home-page content.
 - `settings.ts`: the single source for the shop name, WhatsApp number, phone, address, email, hours, map and social links. The WhatsApp number must include country code and digits only, for example `919876543210`.
 
@@ -55,7 +58,7 @@ Do not prefix asset values in data with the repository name; Vite applies the de
 ```bash
 git init
 git add .
-git commit -m "Create Kepula Flower Store"
+git commit -m "Create Udupi Mallige"
 git branch -M main
 git remote add origin https://github.com/YOUR-USERNAME/udupi-flower-mart.git
 git push -u origin main

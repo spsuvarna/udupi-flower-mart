@@ -7,5 +7,5 @@ export default defineConfig({
   // repository name. Keeping the base deterministic also makes a local
   // `npm run build` safe to deploy to GitHub Pages.
   base: '/udupi-flower-mart/',
-  test: { environment: 'jsdom', globals: true, setupFiles: './src/tests/setup.ts' },
+  test: { environment: 'jsdom', globals: true, setupFiles: './src/tests/setup.ts', exclude: ['e2e/**', 'node_modules/**', 'dist/**'] },
 });

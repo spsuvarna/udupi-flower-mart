@@ -6,11 +6,13 @@ import { banners } from '../data/banners';
 import { products } from '../data/products';
 import { websiteSettings } from '../data/settings';
 import { formatCurrency } from '../utils/currency';
-import { createWhatsAppUrl } from '../utils/whatsapp';
+import { createWhatsAppUrl, generateMarketingOptInMessage } from '../utils/whatsapp';
 
 export function HomePage() {
   const whatsapp = createWhatsAppUrl(websiteSettings.whatsappNumber, `Hello ${websiteSettings.shopName}! I would like help ordering Mallige or Jaaji for tomorrow.`);
+  const marketingOptIn = createWhatsAppUrl(websiteSettings.whatsappNumber, generateMarketingOptInMessage());
   const kateelAmmaImage = `${import.meta.env.BASE_URL}assets/banners/kateel-amma.jpg`;
+  const promotionImage = `${import.meta.env.BASE_URL}assets/promotions/udupi-mallige-whatsapp-promo.png`;
 
   return <>
     <Seo title="Fresh Mallige & Jaaji in Udupi" description={`Order fresh Mallige and Jaaji one day in advance from ${websiteSettings.shopName}. Final pricing is confirmed for your delivery day.`}/>
@@ -47,6 +49,19 @@ export function HomePage() {
     <section className="container-page py-9">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="font-bold uppercase tracking-widest text-floral">Today’s fresh rates</p><h2 className="section-title mt-2">Choose your jasmine</h2><p className="mt-2 text-slate-500">Displayed prices are estimates; the delivery-day rate is confirmed before dispatch.</p></div><Link to="/products" className="inline-flex items-center gap-1 font-bold text-saffron">View shop <ArrowRight size={18}/></Link></div>
       <div className="mt-5 grid max-w-5xl gap-4 sm:grid-cols-3">{products.map(product => <ProductCard key={product.id} product={product}/>)}</div>
+    </section>
+
+    <section className="container-page pb-9">
+      <div className="grid overflow-hidden rounded-[2rem] bg-white shadow-lift lg:grid-cols-[minmax(0,.85fr)_minmax(0,1fr)]">
+        <img src={promotionImage} alt="Udupi Mallige promotion for fresh flower delivery in Udupi and Manipal" width="1256" height="1256" loading="lazy" className="aspect-square h-full w-full object-cover"/>
+        <div className="flex flex-col justify-center p-6 sm:p-9">
+          <p className="font-bold uppercase tracking-widest text-saffron">WhatsApp flower updates</p>
+          <h2 className="mt-2 font-serif text-3xl font-bold text-forest sm:text-4xl">Get availability, prices and offers</h2>
+          <p className="mt-3 max-w-xl leading-relaxed text-slate-600">Choose to receive useful Mallige and Jaaji updates from Udupi Mallige. WhatsApp opens with a clear consent message for you to review and send.</p>
+          <a href={marketingOptIn} target="_blank" rel="noreferrer" className="mt-5 inline-flex min-h-12 w-fit items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 font-bold text-white shadow-soft transition hover:bg-[#20bd5a]"><MessageCircle size={20}/>Get WhatsApp offers</a>
+          <p className="mt-3 flex items-start gap-2 text-sm leading-relaxed text-slate-500"><ShieldCheck size={18} className="mt-0.5 shrink-0 text-forest"/>Optional subscription. Reply STOP at any time and we will remove you from promotional messages.</p>
+        </div>
+      </div>
     </section>
 
     <section className="bg-white py-9"><div className="container-page"><div className="text-center"><p className="font-bold uppercase tracking-widest text-saffron">Easy and personal</p><h2 className="section-title mt-2">Three simple steps</h2></div><div className="mt-5 grid gap-4 md:grid-cols-3">

@@ -5,6 +5,13 @@ import { orderPolicy } from '../data/orderPolicy';
 
 export const createWhatsAppUrl=(number:string,message:string)=>`https://wa.me/${number.replace(/\D/g,'')}?text=${encodeURIComponent(message)}`;
 
+export const generateMarketingOptInMessage=()=>[
+  '*START WHATSAPP OFFERS*',
+  '',
+  `I agree to receive flower availability, daily price updates and promotional offers from ${websiteSettings.englishName} on WhatsApp.`,
+  'I understand that I can reply STOP at any time to unsubscribe.',
+].join('\n');
+
 export const generateOrderMessage=(items:CartItem[],allProducts:Product[],customer:CustomerDetails,area:DeliveryArea,deliveryCharge:number)=>{
   const lines=items.map((item,index)=>{
     const product=allProducts.find(candidate=>candidate.id===item.productId);

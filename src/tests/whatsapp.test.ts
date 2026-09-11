@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { generateOrderMessage, createWhatsAppUrl } from '../utils/whatsapp';
+import { generateOrderMessage, createWhatsAppUrl, generateMarketingOptInMessage } from '../utils/whatsapp';
 import { products } from '../data/products';
 import { deliveryAreas } from '../data/deliveryAreas';
 import type { CustomerDetails } from '../types';
@@ -19,5 +19,12 @@ describe('WhatsApp generation', () => {
   it('correctly URL-encodes the complete message', () => {
     const url = createWhatsAppUrl('+91 98765 43210', 'Flowers & pooja 🌸');
     expect(url).toBe(`https://wa.me/919876543210?text=${encodeURIComponent('Flowers & pooja 🌸')}`);
+  });
+  it('creates an explicit and reversible marketing opt-in', () => {
+    const message = generateMarketingOptInMessage();
+    expect(message).toContain('START WHATSAPP OFFERS');
+    expect(message).toContain('I agree to receive');
+    expect(message).toContain('reply STOP');
+    expect(message).toContain('Udupi Mallige');
   });
 });

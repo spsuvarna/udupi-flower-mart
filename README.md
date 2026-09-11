@@ -64,25 +64,27 @@ git remote add origin https://github.com/YOUR-USERNAME/udupi-flower-mart.git
 git push -u origin main
 ```
 
-If the repository has a different name, change the production `base` in `vite.config.ts` and the URLs in `public/404.html`, `public/robots.txt` and `public/sitemap.xml`.
+The repository name does not affect the public Cloudflare Pages URL.
 
-## Deploy to GitHub Pages
+## Deploy to Cloudflare Pages for free
 
-The workflow at `.github/workflows/deploy.yml` runs linting, type checking, tests and a production build on every push to `main`, then deploys `dist/`.
+The workflow at `.github/workflows/deploy.yml` runs linting, type checking, tests and a production build on every push to `main`. Cloudflare Pages performs the public deployment separately.
 
-In the GitHub repository, open **Settings → Pages** and select **GitHub Actions** as the source. After the workflow succeeds, the site is available at `https://YOUR-USERNAME.github.io/udupi-flower-mart/`.
+1. Create a free Cloudflare account and open **Workers & Pages**.
+2. Select **Create application → Pages → Connect to Git** and authorize the GitHub repository.
+3. Use project name `udupi-mallige` if Cloudflare says it is available.
+4. Set the production branch to `main`, build command to `npm run build`, and output directory to `dist`.
+5. Save and deploy. The intended address is `https://udupi-mallige.pages.dev/`; Cloudflare will show the actual address after confirming project-name availability.
 
-Routing uses `HashRouter`, so URLs such as `/#/products` survive direct access and refresh on GitHub Pages. `public/404.html` provides a branded redirect for unknown non-hash URLs.
+Routing uses `HashRouter`, so URLs such as `/#/products` survive direct access and refresh. `public/404.html` provides a branded redirect for unknown non-hash URLs.
 
-Before launch, replace `YOUR-USERNAME` in `robots.txt` and `sitemap.xml`, and replace all example shop details in `src/data/settings.ts`.
+Before launch, replace all example shop details in `src/data/settings.ts`. If Cloudflare assigns a different project address, replace `https://udupi-mallige.pages.dev` in `index.html`, `public/robots.txt` and `public/sitemap.xml`.
 
 ## Connect a custom domain
 
-1. In **Settings → Pages**, enter the custom domain and enable HTTPS once GitHub allows it.
-2. Add the DNS records GitHub shows (typically a `CNAME` for a subdomain, or GitHub Pages A/AAAA records for an apex domain).
-3. Add a `public/CNAME` file containing only the domain, for example `flowers.example.com`.
-4. For a root custom domain, change Vite's production `base` to `/`; for a repository URL, retain `/udupi-flower-mart/`.
-5. Update the canonical URLs in `robots.txt`, `sitemap.xml`, Open Graph metadata and `404.html`.
+1. In the Cloudflare Pages project, open **Custom domains → Set up a domain**.
+2. Follow Cloudflare's DNS instructions. An apex domain must use Cloudflare nameservers; a subdomain can use a CNAME record.
+3. Update the canonical URLs in `index.html`, `robots.txt` and `sitemap.xml`.
 
 ## Privacy and order flow
 

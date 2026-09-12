@@ -1,20 +1,19 @@
 import { useMemo, useState, type FormEvent, type ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CalendarCheck2, Clock3, Gift, MessageCircle, ShieldCheck, Sparkles } from 'lucide-react';
+import { CalendarCheck2, Clock3, Gift, LocateFixed, MapPin, MessageCircle, ShieldCheck, Sparkles } from 'lucide-react';
 import { Seo } from '../components/Seo';
 import { useCart } from '../context/CartContext';
 import { deliveryAreas } from '../data/deliveryAreas';
-import { occasions } from '../data/occasions';
 import { orderPolicy } from '../data/orderPolicy';
 import { products } from '../data/products';
 import type { CustomerDetails } from '../types';
 import { calculateDeliveryCharge, calculateSubtotal, meetsMinimumOrder } from '../utils/cart';
 import { formatCurrency } from '../utils/currency';
-import { daysUntilDate, getMinimumOrderDate, isValidFutureDate, isValidIndianMobile, isValidPinCode } from '../utils/validation';
+import { daysUntilDate, getMinimumOrderDate, isValidFutureDate, isValidIndianMobile } from '../utils/validation';
 import { createWhatsAppUrl, generateOrderMessage } from '../utils/whatsapp';
 import { websiteSettings } from '../data/settings';
 
-const initial: CustomerDetails = {name:'',mobile:'',address:'',city:'',taluk:'',pinCode:'',landmark:'',deliveryDate:'',deliveryTime:'',occasion:'',instructions:'',paymentPreference:''};
+const initial: CustomerDetails = {name:'',mobile:'',address:'',landmark:'',locationUrl:'',deliveryDate:'',deliveryTime:''};
 
 export function CheckoutPage() {
   const {items, clearCart} = useCart();
@@ -22,6 +21,7 @@ export function CheckoutPage() {
   const [form, setForm] = useState(initial);
   const [areaId, setAreaId] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [locationState, setLocationState] = useState<'idle'|'loading'|'success'|'error'>('idle');
   const subtotal = calculateSubtotal(items, products);
   const area = deliveryAreas.find(item => item.id === areaId);
   const delivery = calculateDeliveryCharge(area, subtotal);
@@ -33,6 +33,19 @@ export function CheckoutPage() {
   const advanceBooking = daysAhead >= 1;
   const minDate = useMemo(() => getMinimumOrderDate(), []);
   const set = (key: keyof CustomerDetails, value: string) => setForm(current => ({...current, [key]:value}));
+  const shareLocation = () => {
+    if (!navigator.geolocation) { setLocationState('error'); return; }
+    setLocationState('loading');
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        set('locationUrl', `https://www.google.com/maps?q=${latitude.toFixed(6)},${longitude.toFixed(6)}`);
+        setLocationState('success');
+      },
+      () => setLocationState('error'),
+      {enableHighAccuracy:true, timeout:10000, maximumAge:300000},
+    );
+  };
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
@@ -40,12 +53,8 @@ export function CheckoutPage() {
     if (!form.name.trim()) next.name = 'Enter your name.';
     if (!isValidIndianMobile(form.mobile)) next.mobile = 'Enter a valid 10-digit number.';
     if (!form.address.trim()) next.address = 'Enter the delivery address.';
-    if (!form.city.trim()) next.city = 'Enter the town or city.';
-    if (!form.taluk.trim()) next.taluk = 'Enter the taluk.';
-    if (!isValidPinCode(form.pinCode)) next.pinCode = 'Enter a valid Karnataka PIN.';
     if (!isValidFutureDate(form.deliveryDate)) next.deliveryDate = 'Choose tomorrow or later.';
     if (!form.deliveryTime) next.deliveryTime = 'Choose a time.';
-    if (!form.paymentPreference) next.paymentPreference = 'Choose a payment preference.';
     if (!area) next.area = 'Choose a delivery area.';
     if (!minimumOk) next.order = `Add ${formatCurrency(amountNeeded)} to reach the ${formatCurrency(orderPolicy.minimumFlowerTotal)} minimum.`;
     setErrors(next);
@@ -78,18 +87,15 @@ export function CheckoutPage() {
           <Field label="Delivery area *" error={errors.area} className="lg:col-span-2"><select value={areaId} onChange={event => setAreaId(event.target.value)}><option value="">Choose area</option>{deliveryAreas.map(item => <option key={item.id} value={item.id}>{item.areaName}</option>)}</select></Field>
 
           <Field label="Delivery address *" error={errors.address} className="sm:col-span-2 lg:col-span-4"><textarea value={form.address} onChange={event => set('address', event.target.value)} rows={2} autoComplete="street-address" placeholder="House, street and locality"/></Field>
-          <Field label="Landmark" className="lg:col-span-2"><input value={form.landmark} onChange={event => set('landmark', event.target.value)} placeholder="Nearby place"/></Field>
+          <Field label="Landmark (optional)" className="lg:col-span-2"><input value={form.landmark} onChange={event => set('landmark', event.target.value)} placeholder="Nearby place"/></Field>
 
-          <Field label="Town / city *" error={errors.city} className="lg:col-span-2"><input value={form.city} onChange={event => set('city', event.target.value)} autoComplete="address-level2"/></Field>
-          <Field label="Taluk *" error={errors.taluk} className="lg:col-span-2"><input value={form.taluk} onChange={event => set('taluk', event.target.value)}/></Field>
-          <Field label="PIN code *" error={errors.pinCode} className="lg:col-span-2"><input value={form.pinCode} onChange={event => set('pinCode', event.target.value)} inputMode="numeric" maxLength={6} autoComplete="postal-code"/></Field>
+          <div className="sm:col-span-2 lg:col-span-6 rounded-xl border border-forest/15 bg-forest/[.03] p-3">
+            <div className="flex flex-wrap items-center justify-between gap-3"><div><span className="flex items-center gap-1.5 text-xs font-bold text-forest"><MapPin size={16}/>Live location (optional)</span><p className="mt-1 text-[11px] text-slate-500">Share a map pin so our rider can find the address. Your browser will ask permission.</p></div><button type="button" onClick={shareLocation} disabled={locationState==='loading'} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-forest/25 bg-white px-4 py-2 text-sm font-bold text-forest transition hover:bg-forest hover:text-white disabled:opacity-60"><LocateFixed size={17}/>{locationState==='loading'?'Finding location…':locationState==='success'?'Location added':'Use my live location'}</button></div>
+            {locationState==='error'&&<p className="mt-2 text-xs font-semibold text-red-700" role="alert">Location could not be shared. Please enter the address manually.</p>}
+          </div>
 
-          <Field label="Delivery date *" error={errors.deliveryDate} className="lg:col-span-2"><input type="date" min={minDate} value={form.deliveryDate} onChange={event => set('deliveryDate', event.target.value)}/></Field>
-          <Field label="Preferred time *" error={errors.deliveryTime} className="lg:col-span-2"><select value={form.deliveryTime} onChange={event => set('deliveryTime', event.target.value)}><option value="">Choose evening slot</option><option>6:00 PM–8:00 PM</option></select></Field>
-          <Field label="Occasion" className="lg:col-span-2"><select value={form.occasion} onChange={event => set('occasion', event.target.value)}><option value="">Optional</option>{occasions.map(occasion => <option key={occasion.id}>{occasion.name}</option>)}</select></Field>
-
-          <Field label="Payment preference *" error={errors.paymentPreference} className="lg:col-span-2"><select value={form.paymentPreference} onChange={event => set('paymentPreference', event.target.value)}><option value="">Choose payment</option><option>Cash on delivery</option><option>UPI after confirmation</option><option>Bank transfer after confirmation</option></select></Field>
-          <Field label="Instructions" className="sm:col-span-2 lg:col-span-4"><textarea value={form.instructions} onChange={event => set('instructions', event.target.value)} rows={2} placeholder="Quantity notes, directions or ceremony time"/></Field>
+          <Field label="Delivery date *" error={errors.deliveryDate} className="lg:col-span-3"><input type="date" min={minDate} value={form.deliveryDate} onChange={event => set('deliveryDate', event.target.value)}/></Field>
+          <Field label="Preferred time *" error={errors.deliveryTime} className="lg:col-span-3"><select value={form.deliveryTime} onChange={event => set('deliveryTime', event.target.value)}><option value="">Choose evening slot</option><option>6:00 PM–8:00 PM</option></select></Field>
         </div>
 
         {advanceBooking && <div className="mt-4 flex items-start gap-3 rounded-xl border border-gold/30 bg-gold/10 p-3"><CalendarCheck2 className="mt-0.5 shrink-0 text-saffron" size={20}/><div><strong className="text-sm text-forest">Delivery-day pricing</strong><p className="mt-0.5 text-xs leading-relaxed text-slate-600">{daysAhead === 1 ? 'For tomorrow, the listed amount is an estimate. We confirm the final rate before dispatch.' : `For delivery in ${daysAhead} days, the rate on that delivery day will apply. We confirm the final amount before dispatch.`} If the final rate does not suit you, you can revise or cancel before dispatch.</p></div></div>}

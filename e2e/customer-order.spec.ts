@@ -14,14 +14,10 @@ test('customer can order Mallige and Jaaji through checkout', async ({ page }) =
   await page.getByLabel('Customer name *').fill('Asha');
   await page.getByLabel('Mobile number *').fill('9876543210');
   await page.getByLabel('Delivery address *').fill('12 Temple Road');
-  await page.getByLabel('Town / city *').fill('Udupi');
-  await page.getByLabel('Taluk *').fill('Udupi');
-  await page.getByLabel('PIN code *').fill('576101');
   await page.getByLabel('Delivery area *').selectOption('udupi');
   const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
   await page.getByLabel('Delivery date *').fill(tomorrow.toISOString().slice(0, 10));
   await page.getByLabel('Preferred time *').selectOption({ index: 1 });
-  await page.getByLabel('Payment preference *').selectOption({ index: 1 });
   await page.getByRole('button', { name: 'Confirm on WhatsApp' }).click();
   await expect(page.getByRole('heading', { name: 'Your flower cart' })).toBeVisible();
   const orderUrl = await page.evaluate(() => sessionStorage.getItem('lastOpenedUrl'));

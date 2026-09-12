@@ -4,7 +4,7 @@ import { products } from '../data/products';
 import { deliveryAreas } from '../data/deliveryAreas';
 import type { CustomerDetails } from '../types';
 
-const customer: CustomerDetails = {name:'Asha Pai',mobile:'9876543210',address:'12 Temple Road',city:'Udupi',taluk:'Udupi',pinCode:'576101',landmark:'Near temple',deliveryDate:'2030-01-01',deliveryTime:'9:00 AM–12:00 PM',occasion:'Pooja',instructions:'White flowers',paymentPreference:'Cash on delivery'};
+const customer: CustomerDetails = {name:'Asha Pai',mobile:'9876543210',address:'12 Temple Road',landmark:'Near temple',locationUrl:'https://www.google.com/maps?q=13.3409,74.7421',deliveryDate:'2030-01-01',deliveryTime:'9:00 AM–12:00 PM'};
 
 describe('WhatsApp generation', () => {
   it('includes items, totals and delivery details', () => {
@@ -14,7 +14,7 @@ describe('WhatsApp generation', () => {
     expect(message).toContain('TOTAL DUE: TO BE CONFIRMED');
     expect(message).toContain('RATE POLICY');
     expect(message).toContain('Asha Pai');
-    expect(message).toContain('576101');
+    expect(message).toContain('google.com/maps?q=13.3409,74.7421');
   });
   it('correctly URL-encodes the complete message', () => {
     const url = createWhatsAppUrl('+91 98765 43210', 'Flowers & pooja 🌸');

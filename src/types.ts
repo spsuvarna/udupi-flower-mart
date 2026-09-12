@@ -5,5 +5,5 @@ export interface DeliveryArea { id:string; areaName:string; taluk:string; pinCod
 export interface Banner { id:string; title:string; subtitle:string; imagePath:string; ctaText:string; ctaLink:string }
 export interface Testimonial { id:string; name:string; location:string; rating:number; quote:string }
 export interface CartItem { productId:string; quantity:number }
-export interface CustomerDetails { name:string; mobile:string; address:string; city:string; taluk:string; pinCode:string; landmark:string; deliveryDate:string; deliveryTime:string; occasion:string; instructions:string; paymentPreference:string }
+export interface CustomerDetails { name:string; mobile:string; address:string; landmark:string; locationUrl:string; deliveryDate:string; deliveryTime:string }
 export interface EnquiryDetails { name:string; mobile:string; functionType:string; functionDate:string; venue:string; requirements:string; expectedQuantity:string; budget:string; additionalInfo:string }
